@@ -1,46 +1,21 @@
-import React, { useState } from "react";
-import TodoForm from "./TodoForm";
-import { RiCloseCircleLine } from "react-icons/ri";
-import { TiEdit } from "react-icons/ti";
+import { useState } from "react";
 
-const Todo = ({ todos, completeTodo, removeTodo, updateTodo }) => {
-  const [edit, setEdit] = useState({
-    id: null,
-    value: "",
-  });
+const Todo = ({ task, deleteHandler, index }) => {
+  const [complete, setComplete] = useState(false);
 
-  const submitUpdate = (value) => {
-    updateTodo(edit.id, value);
-    setEdit({
-      id: null,
-      value: "",
-    });
-  };
-
-  if (edit.id) {
-    return <TodoForm edit={edit} onSubmit={submitUpdate} />;
-  }
-
-  return todos.map((todo, index) => (
-    <div
-      className={todo.isComplete ? "todo-row complete" : "todo-row"}
-      key={index}
-    >
-      <div key={todo.id} onClick={() => completeTodo(todo.id)}>
-        {todo.text}
-      </div>
-      <div className="icons">
-        <RiCloseCircleLine
-          onClick={() => removeTodo(todo.id)}
-          className="delete-icon"
-        />
-        <TiEdit
-          onClick={() => setEdit({ id: todo.id, value: todo.text })}
-          className="edit-icon"
-        />
-      </div>
+  return (
+    <div>
+      {complete ? (
+        <h1 style={{ color: "green", textDecoration: "line-through" }}>
+          {task}
+        </h1>
+      ) : (
+        <h1>{task}</h1>
+      )}
+      <button onClick={() => deleteHandler(index)}>Delete</button>
+      <button onClick={() => setComplete(true)}>Complete</button>
     </div>
-  ));
+  );
 };
 
 export default Todo;
